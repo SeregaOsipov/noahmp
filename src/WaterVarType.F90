@@ -109,6 +109,7 @@ module WaterVarType
     real(kind=kind_noahmp) :: IrrigationAmtMicro         ! micro irrigation water amount [m]
     real(kind=kind_noahmp) :: IrrigationFracSprinkler    ! fraction of grid under sprinkler irrigation (0 to 1)
     real(kind=kind_noahmp) :: IrrigationAmtSprinkler     ! sprinkler irrigation water amount [m]
+    real(kind=kind_noahmp) :: RegreenMask                ! mask of active regreening, which implies irrigation (0 or 1)
     real(kind=kind_noahmp) :: WaterTableDepth            ! water table depth [m]
     real(kind=kind_noahmp) :: SoilIceMax                 ! maximum soil ice content [m3/m3]
     real(kind=kind_noahmp) :: SoilLiqWaterMin            ! minimum soil liquid water content [m3/m3]

@@ -230,6 +230,7 @@ module NoahmpIOVarType
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRWATSI              ! irrigation water amount [m] to be applied, Sprinkler
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRWATMI              ! irrigation water amount [m] to be applied, Micro
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRWATFI              ! irrigation water amount [m] to be applied, Flood
+    real(kind=kind_noahmp), allocatable, dimension(:,:)    :: AGREENM              ! =1 active regreening mask; =0 not
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRELOSS              ! loss of irrigation water to evaporation,sprinkler [m/timestep]
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRSIVOL              ! amount of irrigation by sprinkler (mm)
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRMIVOL              ! amount of irrigation by micro (mm)

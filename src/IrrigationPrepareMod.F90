@@ -41,7 +41,8 @@ contains
               FlagCropland            => noahmp%config%domain%FlagCropland          ,& ! out,   flag to identify croplands
               IrrigationFracSprinkler => noahmp%water%state%IrrigationFracSprinkler ,& ! out,   sprinkler irrigation fraction (0 to 1)
               IrrigationFracMicro     => noahmp%water%state%IrrigationFracMicro     ,& ! out,   fraction of grid under micro irrigation (0 to 1)
-              IrrigationFracFlood     => noahmp%water%state%IrrigationFracFlood      & ! out,   fraction of grid under flood irrigation (0 to 1)
+              IrrigationFracFlood     => noahmp%water%state%IrrigationFracFlood     ,& ! out,   fraction of grid under flood irrigation (0 to 1)
+              RegreenMask             => noahmp%water%state%RegreenMask              & ! in,     active regreening mask, which requires irrigation
              )
 ! ----------------------------------------------------------------------
 
@@ -53,6 +54,10 @@ contains
        if ( (VegType >= 3) .and. (VegType <= 6) ) FlagCropland = .true.
     elseif ( trim(LandUseDataName) == "MODIFIED_IGBP_MODIS_NOAH") then
        if ( (VegType == 12) .or. (VegType == 14) ) FlagCropland = .true.
+    endif
+
+    if (RegreenMask > 0) then
+        FlagCropland = .true.
     endif
 
     ! if OptIrrigationMethod = 0 and if methods are unknown for certain area, then use sprinkler irrigation method
