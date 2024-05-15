@@ -72,12 +72,21 @@ contains
     WindSpdTot       = sqrt((WindEastwardRefHeight**2.0) + (WindNorthwardRefHeight**2.0))
     PressureVaporSat = 610.8 * exp((17.27*(TemperatureAirRefHeight-273.15)) / (237.3+(TemperatureAirRefHeight-273.15)))
 
-    if ( TemperatureAirRefHeight > 273.15 ) then ! Equation (3)
-       IrriLossTmp   = 4.375 * (exp(0.106*WindSpdTot)) * (((PressureVaporSat-PressureVaporRefHeight)*0.01)**(-0.092)) * &
-                       ((TemperatureAirRefHeight-273.15)**(-0.102))
-    else ! Equation (4)
-       IrriLossTmp   = 4.337 * (exp(0.077*WindSpdTot)) * (((PressureVaporSat-PressureVaporRefHeight)*0.01)**(-0.098))
-    endif
+    ! osipov Saturated vapor pressure are computed inconsistently causing numerical errors (due raising of a negative number to the power)
+    ! this can happen especially in uncoupled setups. Test that exponential base is positive
+    ! TODO: this needs to be fixed properly
+    if (PressureVaporSat > PressureVaporRefHeight ) then
+      if ( TemperatureAirRefHeight > 273.15 ) then ! Equation (3)
+         IrriLossTmp   = 4.375 * (exp(0.106*WindSpdTot)) * (((PressureVaporSat-PressureVaporRefHeight)*0.01)**(-0.092)) * &
+                         ((TemperatureAirRefHeight-273.15)**(-0.102))
+      else ! Equation (4)
+         IrriLossTmp   = 4.337 * (exp(0.077*WindSpdTot)) * (((PressureVaporSat-PressureVaporRefHeight)*0.01)**(-0.098))
+      endif
+    else  ! otherwise, the vapor pressure difference is small and so is the irri loss
+      write(*,*) "IrrigationSprinklerMod.F:  Warning. PressureVaporSat < PressureVaporRefHeight, which would cause a numerical error. Check the atm forcing."
+      IrriLossTmp = 0
+    end if
+
     ! Old PGI Fortran compiler does not support ISNAN function
     call CheckRealNaN(IrriLossTmp, FlagNan)
     if ( FlagNan .eqv. .true. ) IrriLossTmp = 4.0                           ! In case if IrriLossTmp is NaN
