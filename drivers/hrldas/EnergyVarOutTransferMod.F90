@@ -144,6 +144,11 @@ contains
        NoahmpIO%ALBEDO(I,J) = noahmp%energy%state%AlbedoSfc
     endif
 
+    !additional output osipovs@ATCM
+    NoahmpIO%RGRNDXY (I,J) = noahmp%energy%state%ResistanceGrdEvap
+    NoahmpIO%RADWVGRNDXY (I,J) = noahmp%energy%state%ResistanceLhBareGrd
+    NoahmpIO%RADWVUCXY (I,J) = noahmp%energy%state%ResistanceLhUndCan
+
     ! New Calculation of total Canopy/Stomatal Conductance Based on Bonan et al. (2011), Inverse of Canopy Resistance (below)
     LeafAreaIndSunlit      = max(noahmp%energy%state%LeafAreaIndSunlit, 0.0)
     LeafAreaIndShade       = max(noahmp%energy%state%LeafAreaIndShade, 0.0)

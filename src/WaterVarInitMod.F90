@@ -38,6 +38,8 @@ contains
     noahmp%water%state%IrrigationFracSprinkler     = undefined_real
     noahmp%water%state%IrrigationAmtSprinkler      = undefined_real
     noahmp%water%state%IrrigationFracGrid          = undefined_real
+    noahmp%water%state%RegreenMask                 = undefined_real
+    noahmp%water%state%MulchingMask                = undefined_real
     noahmp%water%state%CanopyLiqWater              = undefined_real
     noahmp%water%state%CanopyIce                   = undefined_real
     noahmp%water%state%CanopyTotalWater            = undefined_real

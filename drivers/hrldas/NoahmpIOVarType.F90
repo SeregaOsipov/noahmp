@@ -63,6 +63,7 @@ module NoahmpIOVarType
     integer                                                ::  IOPT_IRRM           ! irrigation method (0->dynamic; 1-> sprinkler; 2-> micro; 3-> flood)
     integer                                                ::  IOPT_INFDV          ! infiltration options for dynamic VIC (1->Philip; 2-> Green-Ampt;3->Smith-Parlange)
     integer                                                ::  IOPT_TDRN           ! drainage option (0->off; 1->simple scheme; 2->Hooghoudt's scheme)
+    integer                                                ::  IOPT_MULCH          ! mulching option (0->none; 1->active)
     real(kind=kind_noahmp)                                 ::  XICE_THRESHOLD      ! fraction of grid determining seaice
     real(kind=kind_noahmp)                                 ::  JULIAN              ! Julian day
     real(kind=kind_noahmp)                                 ::  DTBL                ! timestep [s]
@@ -230,6 +231,8 @@ module NoahmpIOVarType
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRWATSI              ! irrigation water amount [m] to be applied, Sprinkler
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRWATMI              ! irrigation water amount [m] to be applied, Micro
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRWATFI              ! irrigation water amount [m] to be applied, Flood
+    real(kind=kind_noahmp), allocatable, dimension(:,:)    :: AGREENM              ! =1 active regreening mask; =0 not
+    real(kind=kind_noahmp), allocatable, dimension(:,:)    :: MULCHM               ! mulching mask: 1 apply; 0 not
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRELOSS              ! loss of irrigation water to evaporation,sprinkler [m/timestep]
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRSIVOL              ! amount of irrigation by sprinkler (mm)
     real(kind=kind_noahmp), allocatable, dimension(:,:)    :: IRMIVOL              ! amount of irrigation by micro (mm)
@@ -286,6 +289,11 @@ module NoahmpIOVarType
     real(kind=kind_noahmp), allocatable, dimension(:,:)    ::  Z0                  ! roughness length output to WRF
     real(kind=kind_noahmp), allocatable, dimension(:,:)    ::  ZNT                 ! roughness length output to WRF
     real(kind=kind_noahmp), allocatable, dimension(:,:)    ::  QTDRAIN             ! tile drain discharge [mm]
+
+    ! additional output osipovs@ATCM
+    real(kind=kind_noahmp), allocatable, dimension(:,:)    ::  RGRNDXY             ! Ground surface resistance to evaporation [s/m]
+    real(kind=kind_noahmp), allocatable, dimension(:,:)    ::  RADWVGRNDXY         ! Aerodynamic resistance for water vapor, bare ground[s/m]
+    real(kind=kind_noahmp), allocatable, dimension(:,:)    ::  RADWVUCXY           ! Aerodynamic resistance for water vapor, under canopy [s/m]
 
     ! additional output variables
     real(kind=kind_noahmp), allocatable, dimension(:,:)    ::  PAHXY               ! precipitation advected heat [W/m2]

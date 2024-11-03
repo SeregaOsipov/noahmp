@@ -92,6 +92,7 @@ contains
     integer                 :: irrigation_method                  = 0
     integer                 :: dvic_infiltration_option           = 1
     integer                 :: tile_drainage_option               = 0
+    integer                 :: mulch_option                       = 0
     integer                 :: split_output_count                 = 1
     logical                 :: skip_first_output                  = .false.
     integer                 :: khour                              = -9999
@@ -129,6 +130,7 @@ contains
          glacier_option, surface_resistance_option,                                       &
          irrigation_option, irrigation_method, dvic_infiltration_option,                  &
          tile_drainage_option,soil_data_option, pedotransfer_option, crop_option,         &
+         mulch_option,                                                                    &
          sf_urban_physics,use_wudapt_lcz,num_urban_hi,urban_atmosphere_thickness,         &
          num_urban_ndm,num_urban_ng,num_urban_nwr ,num_urban_ngb ,                        &
          num_urban_nf ,num_urban_nz,num_urban_nbui,num_urban_ngr ,                        &
@@ -343,6 +345,7 @@ contains
     NoahmpIO%IOPT_IRRM                         = irrigation_method
     NoahmpIO%IOPT_INFDV                        = dvic_infiltration_option
     NoahmpIO%IOPT_TDRN                         = tile_drainage_option
+    NoahmpIO%IOPT_MULCH                        = mulch_option
     ! basic model setup variables
     NoahmpIO%indir                             = indir
     NoahmpIO%forcing_timestep                  = forcing_timestep

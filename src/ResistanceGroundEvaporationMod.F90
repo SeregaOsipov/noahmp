@@ -30,6 +30,7 @@ contains
     real(kind=kind_noahmp)           :: DrySoilThickness       ! Dry-layer thickness [m] for computing RSURF (Sakaguchi and Zeng, 2009)
     real(kind=kind_noahmp)           :: VapDiffuseRed          ! Reduced vapor diffusivity [m2/s] in soil for computing RSURF (SZ09)
     real(kind=kind_noahmp)           :: SoilMatPotentialSfc    ! surface layer soil matric potential [m]
+    real(kind=kind_noahmp)           :: MulchingEvapResistance ! mulching resistance to evaporation [s/m]
 
 ! --------------------------------------------------------------------
     associate(                                                                         &
@@ -47,8 +48,10 @@ contains
               SnowCoverFrac           => noahmp%water%state%SnowCoverFrac             ,& ! in,  snow cover fraction
               SnowDepth               => noahmp%water%state%SnowDepth                 ,& ! in,  snow depth [m]
               TemperatureGrd          => noahmp%energy%state%TemperatureGrd           ,& ! in,  ground temperature [K]
+              MulchingMask            => noahmp%water%state%MulchingMask              ,& ! in,  mulching mask
+              OptMulching             => noahmp%config%nmlist%OptMulching             ,& ! in,  mulching activator
               ResistanceGrdEvap       => noahmp%energy%state%ResistanceGrdEvap        ,& ! out, ground surface resistance [s/m] to evaporation
-              RelHumidityGrd          => noahmp%energy%state%RelHumidityGrd            & ! out, raltive humidity in surface soil/snow air space
+              RelHumidityGrd          => noahmp%energy%state%RelHumidityGrd            & ! out, relative humidity in surface soil/snow air space
              )
 ! ----------------------------------------------------------------------
 
@@ -87,6 +90,19 @@ contains
                              (max(0.01,SoilLiqWater(1)) / SoilMoistureSat(1)) ** (-SoilExpCoeffB(1))
        RelHumidityGrd      = SnowCoverFrac + &
                              (1.0-SnowCoverFrac) * exp(SoilMatPotentialSfc*ConstGravityAcc/(ConstGasWaterVapor*TemperatureGrd))
+    endif
+
+    ! mulching to reduce evaporation losses
+    ! this will add mulching resistance contribution to the ground resistance
+    if ((OptMulching>0) .and. (MulchingMask > 0)) then
+        MulchingEvapResistance = 0.0
+        ! Model mulching resistance using Fick's Law.
+        ! Rresistance = L/D, where D is effective diffusion coefficient that depends on mulch. Due to lack of info, assume D_0
+        ! Mulching thickness 10 mm -> 10*10**-3 m
+        MulchingEvapResistance = 1.0e-2 / 2.2e-5  ! produces resistance of 454
+
+        ! add mulching resistance to ground for now, but consider having it separate in the future
+        ResistanceGrdEvap = ResistanceGrdEvap + MulchingEvapResistance
     endif
 
     ! urban

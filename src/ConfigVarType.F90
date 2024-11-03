@@ -120,6 +120,9 @@ module ConfigVarType
     integer :: OptGlacierTreatment         ! options for glacier treatment
                                               ! 1 -> include phase change of ice (default)
                                               ! 2 -> ice treatment more like original Noah
+    integer :: OptMulching                 ! options for crop model
+                                              ! 0 -> No mulching
+                                              ! 1 -> apply mulching where netcdf MULCH mask is > 0
 
   end type namelist_type
 

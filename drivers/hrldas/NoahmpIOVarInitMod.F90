@@ -46,6 +46,8 @@ contains
     if ( .not. allocated (NoahmpIO%VEGFRA)    ) allocate ( NoahmpIO%VEGFRA     (XSTART:XEND,        YSTART:YEND) ) ! vegetation fraction []
     if ( .not. allocated (NoahmpIO%TMN)       ) allocate ( NoahmpIO%TMN        (XSTART:XEND,        YSTART:YEND) ) ! deep soil temperature [K]
     if ( .not. allocated (NoahmpIO%XLAND)     ) allocate ( NoahmpIO%XLAND      (XSTART:XEND,        YSTART:YEND) ) ! =2 ocean; =1 land/seaice
+    if ( .not. allocated (NoahmpIO%AGREENM)   ) allocate ( NoahmpIO%AGREENM    (XSTART:XEND,        YSTART:YEND) ) ! =1 active regreening; =0 not
+    if ( .not. allocated (NoahmpIO%MULCHM)    ) allocate ( NoahmpIO%MULCHM     (XSTART:XEND,        YSTART:YEND) ) ! mulching mask: =1 apply; =0 not
     if ( .not. allocated (NoahmpIO%XICE)      ) allocate ( NoahmpIO%XICE       (XSTART:XEND,        YSTART:YEND) ) ! fraction of grid that is seaice
     if ( .not. allocated (NoahmpIO%SWDOWN)    ) allocate ( NoahmpIO%SWDOWN     (XSTART:XEND,        YSTART:YEND) ) ! solar down at surface [W m-2]
     if ( .not. allocated (NoahmpIO%SWDDIR)    ) allocate ( NoahmpIO%SWDDIR     (XSTART:XEND,        YSTART:YEND) ) ! solar down at surface [W m-2] for new urban solar panel
@@ -253,6 +255,12 @@ contains
     if ( .not. allocated (NoahmpIO%TERRAIN)    ) allocate ( NoahmpIO%TERRAIN     (XSTART:XEND,YSTART:YEND) ) ! terrain height
     if ( .not. allocated (NoahmpIO%GVFMIN)     ) allocate ( NoahmpIO%GVFMIN      (XSTART:XEND,YSTART:YEND) ) ! annual minimum in vegetation fraction
     if ( .not. allocated (NoahmpIO%GVFMAX)     ) allocate ( NoahmpIO%GVFMAX      (XSTART:XEND,YSTART:YEND) ) ! annual maximum in vegetation fraction
+
+    !additional output osipovs@ATCM
+    if ( .not. allocated (NoahmpIO%RGRNDXY)    ) allocate ( NoahmpIO%RGRNDXY     (XSTART:XEND,YSTART:YEND) ) ! Ground surface resistance to evaporation [s/m]
+    if ( .not. allocated (NoahmpIO%RADWVGRNDXY)) allocate ( NoahmpIO%RADWVGRNDXY (XSTART:XEND,YSTART:YEND) ) ! Aerodynamic resistance for water vapor, bare ground [s/m]
+    if ( .not. allocated (NoahmpIO%RADWVUCXY)  ) allocate ( NoahmpIO%RADWVUCXY   (XSTART:XEND,YSTART:YEND) ) ! Aerodynamic resistance for water vapor, under canopy [s/m]
+    !if ( .not. allocated (NoahmpIO%RLHBAREGRNDXY)    ) allocate ( NoahmpIO%RLHBAREGRNDXY     (XSTART:XEND,YSTART:YEND) ) ! aerodynamic resistance for water vapor [s/m], bare ground
 
     ! additional output variables
     if ( .not. allocated (NoahmpIO%PAHXY)       ) allocate ( NoahmpIO%PAHXY        (XSTART:XEND,        YSTART:YEND) )
@@ -478,6 +486,8 @@ contains
     NoahmpIO%VEGFRA          = undefined_real
     NoahmpIO%TMN             = undefined_real
     NoahmpIO%XLAND           = undefined_real
+    NoahmpIO%AGREENM         = undefined_real
+    NoahmpIO%MULCHM         = undefined_real
     NoahmpIO%XICE            = undefined_real
     NoahmpIO%T_PHY           = undefined_real
     NoahmpIO%QV_CURR         = undefined_real
@@ -609,6 +619,11 @@ contains
     NoahmpIO%SFCRUNOFF       = 0.0
     NoahmpIO%UDRUNOFF        = 0.0
 
+    !additional output osipovs@ATCM
+    NoahmpIO%RGRNDXY         = undefined_real
+    NoahmpIO%RADWVGRNDXY     = undefined_real
+    NoahmpIO%RADWVUCXY       = undefined_real
+
     ! additional output
     NoahmpIO%PAHXY           = undefined_real
     NoahmpIO%PAHGXY          = undefined_real
@@ -694,6 +709,8 @@ contains
     NoahmpIO%IRWATSI         = 0.0
     NoahmpIO%IRWATMI         = 0.0
     NoahmpIO%IRWATFI         = 0.0
+    NoahmpIO%AGREENM         = 0.0
+    NoahmpIO%MULCHM          = 0.0
     NoahmpIO%IRELOSS         = 0.0
     NoahmpIO%IRSIVOL         = 0.0
     NoahmpIO%IRMIVOL         = 0.0
@@ -834,6 +851,8 @@ contains
     endif
 
     NoahmpIO%XLAND             = 1.0      ! water = 2.0, land = 1.0
+    NoahmpIO%AGREENM           = 0        ! regreening = 1.0, no regreening = 0.0
+    NoahmpIO%MULCHM            = 0        ! mulching mask: 1.0 apply, 0.0 not
     NoahmpIO%XICE              = 0.0      ! fraction of grid that is seaice
     NoahmpIO%XICE_THRESHOLD    = 0.5      ! fraction of grid determining seaice (from WRF)
     NoahmpIO%SLOPETYP          = 1        ! soil parameter slope type
