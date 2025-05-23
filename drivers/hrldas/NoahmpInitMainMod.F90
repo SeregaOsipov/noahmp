@@ -195,10 +195,12 @@ contains
                                             max(NoahmpIO%SLA_TABLE(NoahmpIO%NATURAL_TABLE),1.0)! use LAI to initialize (v3.7)
                 endif
                 NoahmpIO%STMASSXY(I,J) = NoahmpIO%XSAIXY(I,J) * 1000.0 / 3.0                ! use SAI to initialize (v3.7)
-                NoahmpIO%RTMASSXY(I,J) = 500.0                                              ! these are all arbitrary and probably should be
-                NoahmpIO%WOODXY(I,J)   = 500.0                                              ! in the table or read from initialization
-                NoahmpIO%STBLCPXY(I,J) = 1000.0
-                NoahmpIO%FASTCPXY(I,J) = 1000.0
+                ! these below are now initialized from HRLDAS, see module_hrldas_netcdf_io, subroutne readveg_hrldas
+                !NoahmpIO%RTMASSXY(I,J) = 500.0                                              ! these are all arbitrary and probably should be
+                !NoahmpIO%WOODXY(I,J)   = 500.0                                              ! in the table or read from initialization
+                !NoahmpIO%STBLCPXY(I,J) = 1000.0
+                !NoahmpIO%FASTCPXY(I,J) = 1000.0
+
                 NoahmpIO%GRAINXY(I,J)  = 1.0e-10
                 NoahmpIO%GDDXY(I,J)    = 0    
 
